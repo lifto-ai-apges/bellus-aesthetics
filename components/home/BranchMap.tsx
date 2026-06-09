@@ -1,0 +1,366 @@
+"use client";
+
+import { useState } from "react";
+import { branchesData, BranchItem } from "../../data/branches";
+
+export default function BranchMap() {
+  const [selectedBranch, setSelectedBranch] = useState<BranchItem>(branchesData[0]);
+
+  // Center coordinates for map reference
+  const centerLat = 14.5;
+  const centerLng = 121.0;
+
+  // Simple coordinate projection to SVG coordinate system for Manila/Cavite
+  const projectCoords = (lat: number, lng: number) => {
+    // Zoomed in scale factor
+    const scale = 500;
+    const x = (lng - centerLng) * scale + 150;
+    // Invert y axis because SVG 0,0 is top-left
+    const y = (centerLat - lat) * scale + 250;
+    return { x, y };
+  };
+
+  return (
+    <section className="section branch-map-section section-dark">
+      <div className="container">
+        <div className="section-header">
+          <span className="section-eyebrow">Locations & Care</span>
+          <h2 className="section-title">7 Branches Across Manila & Cavite</h2>
+          <div className="gold-divider"></div>
+          <p className="section-desc">
+            Visit any of our clean, luxurious clinics. Find a clinic near you and book an appointment with our expert practitioners.
+          </p>
+        </div>
+
+        <div className="map-interface-grid">
+          {/* Branches List Selector */}
+          <div className="branches-selector-list no-scrollbar">
+            {branchesData.map((branch) => {
+              const isSelected = selectedBranch.id === branch.id;
+              return (
+                <div
+                  key={branch.id}
+                  className={`branch-select-card ${isSelected ? "active" : ""}`}
+                  onClick={() => setSelectedBranch(branch)}
+                >
+                  <div className="branch-meta">
+                    <span className="branch-city">{branch.city}</span>
+                    <h3 className="branch-name-text">{branch.shortName}</h3>
+                  </div>
+                  <span className="select-arrow">&rarr;</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Interactive Visual Map & Details */}
+          <div className="map-display-panel">
+            {/* SVG Geographical representation */}
+            <div className="map-visualizer-box">
+              <svg className="manila-vector-map" viewBox="0 0 300 500">
+                {/* Grid guidelines for high-tech clinical look */}
+                <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="0" y1="200" x2="300" y2="200" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="0" y1="300" x2="300" y2="300" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="0" y1="400" x2="300" y2="400" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="100" y1="0" x2="100" y2="500" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="200" y1="0" x2="200" y2="500" stroke="rgba(201, 169, 110, 0.08)" />
+
+                {/* Draw connecting network links */}
+                {branchesData.map((branch) => {
+                  const { x, y } = projectCoords(branch.lat, branch.lng);
+                  const selCoords = projectCoords(selectedBranch.lat, selectedBranch.lng);
+                  return (
+                    <line
+                      key={`link-${branch.id}`}
+                      x1={x}
+                      y1={y}
+                      x2={selCoords.x}
+                      y2={selCoords.y}
+                      stroke="var(--clr-accent)"
+                      strokeWidth="0.5"
+                      strokeOpacity="0.15"
+                      strokeDasharray="4 4"
+                    />
+                  );
+                })}
+
+                {/* Pins */}
+                {branchesData.map((branch) => {
+                  const { x, y } = projectCoords(branch.lat, branch.lng);
+                  const isSelected = selectedBranch.id === branch.id;
+                  return (
+                    <g key={branch.id} onClick={() => setSelectedBranch(branch)} style={{ cursor: "pointer" }}>
+                      {isSelected && (
+                        <circle cx={x} cy={y} r="14" fill="var(--clr-accent)" fillOpacity="0.18" className="pulse-circle">
+                          <animate attributeName="r" values="6;18;6" dur="3s" repeatCount="indefinite" />
+                          <animate attributeName="fill-opacity" values="0.3;0.05;0.3" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                      )}
+                      <circle cx={x} cy={y} r={isSelected ? 6 : 4} fill={isSelected ? "var(--clr-accent)" : "rgba(254, 252, 249, 0.45)"} stroke="var(--clr-accent)" strokeWidth="1" />
+                    </g>
+                  );
+                })}
+              </svg>
+              <div className="map-badge">Interactive Map</div>
+            </div>
+
+            {/* Detailed Info Card */}
+            <div className="branch-details-card glass-card-dark">
+              <h3 className="details-title">{selectedBranch.name}</h3>
+              
+              <div className="details-content-grid">
+                <div className="detail-field">
+                  <span className="field-label">📍 Address</span>
+                  <p className="field-value">{selectedBranch.address}</p>
+                </div>
+
+                <div className="detail-field">
+                  <span className="field-label">📞 Contact Number</span>
+                  <p className="field-value">{selectedBranch.phone}</p>
+                </div>
+
+                <div className="detail-field">
+                  <span className="field-label">🕒 Operating Hours</span>
+                  <p className="field-value">{selectedBranch.hours}</p>
+                </div>
+
+                <div className="detail-field">
+                  <span className="field-label">🌸 Services Offered</span>
+                  <p className="field-value">{selectedBranch.servicesAvailable?.join(" · ")}</p>
+                </div>
+              </div>
+
+              <div className="details-actions">
+                <a href={selectedBranch.mapLink} target="_blank" rel="noopener noreferrer" className="btn btn-accent map-action-btn">
+                  Get Directions
+                </a>
+                <a href={`viber://chat?number=${selectedBranch.phone.replace(/\s+/g, '')}`} className="btn btn-outline-white map-action-btn">
+                  Message Viber
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .branch-map-section {
+          background-color: var(--clr-dark);
+          border-top: 1px solid rgba(201, 169, 110, 0.2);
+        }
+
+        .section-header {
+          text-align: center;
+          max-width: 700px;
+          margin: 0 auto var(--space-xl);
+        }
+
+        .section-eyebrow {
+          font-size: 0.8rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: var(--clr-accent);
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        .section-title {
+          font-family: var(--font-serif);
+          font-size: clamp(2rem, 3.5vw, 2.8rem);
+        }
+
+        .section-desc {
+          font-size: 1.05rem;
+          line-height: 1.5;
+        }
+
+        .map-interface-grid {
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: var(--space-xl);
+          height: 600px;
+        }
+
+        .branches-selector-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          overflow-y: auto;
+          padding-right: 8px;
+        }
+
+        .branch-select-card {
+          background: rgba(254, 252, 249, 0.03);
+          border: 1px solid rgba(254, 252, 249, 0.06);
+          border-radius: var(--radius-md);
+          padding: 18px 24px;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: var(--transition-smooth);
+        }
+
+        .branch-select-card:hover {
+          background: rgba(254, 252, 249, 0.06);
+          border-color: rgba(201, 169, 110, 0.3);
+        }
+
+        .branch-select-card.active {
+          background: rgba(74, 26, 107, 0.3);
+          border-color: var(--clr-accent);
+          box-shadow: 0 0 15px rgba(201, 169, 110, 0.15);
+        }
+
+        .branch-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .branch-city {
+          font-size: 0.7rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--clr-accent);
+        }
+
+        .branch-name-text {
+          font-family: var(--font-serif);
+          font-size: 1.25rem;
+          color: var(--clr-white);
+        }
+
+        .select-arrow {
+          color: var(--clr-accent);
+          font-size: 1.2rem;
+          opacity: 0.5;
+          transition: var(--transition-fast);
+        }
+
+        .branch-select-card.active .select-arrow,
+        .branch-select-card:hover .select-arrow {
+          opacity: 1;
+          transform: translateX(4px);
+        }
+
+        .map-display-panel {
+          display: grid;
+          grid-template-columns: 1.1fr 1fr;
+          gap: var(--space-lg);
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: var(--radius-lg);
+          padding: var(--space-md);
+          border: 1px solid rgba(254, 252, 249, 0.05);
+          overflow: hidden;
+        }
+
+        .map-visualizer-box {
+          position: relative;
+          background: var(--clr-dark-alt);
+          border-radius: var(--radius-md);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(201, 169, 110, 0.08);
+          overflow: hidden;
+        }
+
+        .manila-vector-map {
+          width: 90%;
+          height: 90%;
+        }
+
+        .map-badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          background-color: var(--clr-dark);
+          border: 1px solid var(--clr-accent);
+          color: var(--clr-accent);
+          padding: 2px 10px;
+          border-radius: var(--radius-full);
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .branch-details-card {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: var(--space-md);
+          height: 100%;
+        }
+
+        .details-title {
+          font-family: var(--font-serif);
+          font-size: 1.6rem;
+          color: var(--clr-accent) !important;
+          margin-bottom: var(--space-md);
+          line-height: 1.2;
+        }
+
+        .details-content-grid {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-sm);
+          flex-grow: 1;
+        }
+
+        .detail-field {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .field-label {
+          font-size: 0.7rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--clr-accent);
+          opacity: 0.8;
+        }
+
+        .field-value {
+          font-size: 0.88rem;
+          color: rgba(254, 252, 249, 0.9) !important;
+          line-height: 1.4;
+        }
+
+        .details-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: var(--space-md);
+        }
+
+        .map-action-btn {
+          flex: 1;
+          padding: 0.75rem 0;
+          font-size: 0.8rem;
+        }
+
+        @media (max-width: 992px) {
+          .map-interface-grid {
+            grid-template-columns: 1fr;
+            height: auto;
+          }
+          .branches-selector-list {
+            height: 250px;
+          }
+          .map-display-panel {
+            grid-template-columns: 1fr;
+            height: auto;
+          }
+          .map-visualizer-box {
+            height: 350px;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
