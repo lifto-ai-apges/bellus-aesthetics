@@ -12,29 +12,32 @@ export default function HeroVideo() {
 
   return (
     <section className="hero-section">
-      {/* Background Image */}
-      <img
-        src="/images/hero-bg.png"
-        alt="Bellus Aesthetic Clinic Team Banner"
-        className="hero-img-bg"
-      />
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="hero-video-bg"
+        preload="auto"
+      >
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+      </video>
 
-      {/* Overlay */}
+      {/* Purple Gradient Overlay */}
       <div className="hero-overlay"></div>
 
       {/* Hero Content */}
       <div className="container hero-content-container">
         <div className={`hero-content ${loaded ? "fade-in-up" : ""}`}>
-          <div className="hero-text-block">
-            <span className="hero-eyebrow">Bellus Aesthetic Clinic</span>
-            <h1 className="hero-title">
-              Reveal the Skin<br />
-              You've Always Wanted
-            </h1>
-            <p className="hero-subtitle">
-              Premium, doctor-certified cosmetic transformations, non-surgical facelifts, and body contouring across Metro Manila & Cavite.
-            </p>
-          </div>
+          <span className="hero-eyebrow">Bellus Aesthetic Clinic</span>
+          <h1 className="hero-title">
+            Reveal the Skin<br />
+            You've Always Wanted
+          </h1>
+          <p className="hero-subtitle">
+            Premium, doctor-certified cosmetic transformations, non-surgical facelifts, and body contouring across Metro Manila & Cavite.
+          </p>
           <div className="hero-actions">
             <Link href="/services" className="btn btn-accent hero-btn">
               Explore Treatments
@@ -56,37 +59,23 @@ export default function HeroVideo() {
         .hero-section {
           position: relative;
           width: 100vw;
+          height: 100vh;
           overflow: hidden;
+          display: flex;
+          align-items: center;
           background-color: var(--clr-dark);
         }
 
-        /* Desktop sizing (maintain aspect ratio) */
-        @media (min-width: 768px) {
-          .hero-section {
-            height: auto;
-            aspect-ratio: 1024 / 378;
-            max-height: 620px;
-          }
-        }
-
-        /* Mobile sizing (taller for mobile screens) */
-        @media (max-width: 767px) {
-          .hero-section {
-            height: 80vh;
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-          }
-        }
-
-        .hero-img-bg {
+        .hero-video-bg {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
+          top: 50%;
+          left: 50%;
+          min-width: 100%;
+          min-height: 100%;
+          width: auto;
+          height: auto;
+          transform: translate(-50%, -50%);
           object-fit: cover;
-          object-position: center;
           z-index: 1;
         }
 
@@ -96,32 +85,13 @@ export default function HeroVideo() {
           left: 0;
           width: 100%;
           height: 100%;
+          background: linear-gradient(
+            135deg,
+            rgba(26, 10, 46, 0.88) 0%,
+            rgba(74, 26, 107, 0.45) 50%,
+            rgba(26, 10, 46, 0.92) 100%
+          );
           z-index: 2;
-        }
-
-        @media (min-width: 768px) {
-          .hero-overlay {
-            /* Light top and bottom shading for text/menu readability */
-            background: linear-gradient(
-              to bottom,
-              rgba(26, 10, 46, 0.15) 0%,
-              transparent 25%,
-              transparent 75%,
-              rgba(26, 10, 46, 0.15) 100%
-            );
-          }
-        }
-
-        @media (max-width: 767px) {
-          .hero-overlay {
-            /* Dark purple overlay for white text readability on cropped mobile background */
-            background: linear-gradient(
-              135deg,
-              rgba(26, 10, 46, 0.85) 0%,
-              rgba(74, 26, 107, 0.5) 50%,
-              rgba(26, 10, 46, 0.88) 100%
-            );
-          }
         }
 
         .hero-content-container {
@@ -129,61 +99,20 @@ export default function HeroVideo() {
           z-index: 3;
           height: 100%;
           display: flex;
-          width: 100%;
-        }
-
-        @media (min-width: 768px) {
-          .hero-content-container {
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 35px; /* Adjust height of floating action bar */
-          }
-        }
-
-        @media (max-width: 767px) {
-          .hero-content-container {
-            align-items: center;
-            padding-top: 80px; /* Account for fixed header on mobile */
-          }
+          align-items: center;
+          padding-top: 80px; /* Account for fixed header */
         }
 
         .hero-content {
+          max-width: 750px;
           opacity: 0;
           transform: translateY(40px);
           transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @media (min-width: 768px) {
-          .hero-content {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-          }
-        }
-
-        @media (max-width: 767px) {
-          .hero-content {
-            max-width: 750px;
-          }
-        }
-
         .hero-content.fade-in-up {
           opacity: 1;
           transform: translateY(0);
-        }
-
-        /* Screen reader only styles for desktop, normal layout on mobile */
-        @media (min-width: 768px) {
-          .hero-text-block {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-          }
         }
 
         .hero-eyebrow {
@@ -198,14 +127,14 @@ export default function HeroVideo() {
 
         .hero-title {
           font-family: var(--font-serif);
-          font-size: clamp(2.3rem, 5vw, 4rem);
+          font-size: clamp(2.5rem, 6vw, 4.8rem);
           color: var(--clr-white);
           line-height: 1.1;
           margin-bottom: var(--space-md);
         }
 
         .hero-subtitle {
-          font-size: clamp(1rem, 2vw, 1.15rem);
+          font-size: clamp(1.05rem, 2vw, 1.25rem);
           color: rgba(254, 252, 249, 0.85);
           line-height: 1.5;
           margin-bottom: var(--space-lg);
@@ -214,41 +143,17 @@ export default function HeroVideo() {
 
         .hero-actions {
           display: flex;
-        }
-
-        @media (min-width: 768px) {
-          .hero-actions {
-            gap: 20px;
-            background: rgba(26, 10, 46, 0.65);
-            padding: 12px 28px;
-            border-radius: var(--radius-full);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(201, 169, 110, 0.25);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-          }
-        }
-
-        @media (max-width: 767px) {
-          .hero-actions {
-            gap: 16px;
-          }
+          gap: 16px;
         }
 
         .hero-btn {
           padding: 1.1rem 2.6rem;
         }
 
-        @media (min-width: 768px) {
-          .hero-btn {
-            padding: 0.9rem 2.2rem;
-            font-size: 0.9rem;
-          }
-        }
-
         /* Scroll indicator */
         .scroll-indicator {
           position: absolute;
-          bottom: 30px;
+          bottom: 40px;
           left: 50%;
           transform: translateX(-50%);
           z-index: 3;
@@ -257,12 +162,6 @@ export default function HeroVideo() {
           align-items: center;
           gap: 12px;
           opacity: 0.7;
-        }
-
-        @media (min-width: 768px) {
-          .scroll-indicator {
-            display: none; /* Hide on desktop for clean banner */
-          }
         }
 
         .scroll-label {

@@ -58,18 +58,47 @@ export default function BranchMap() {
             {/* SVG Geographical representation */}
             <div className="map-visualizer-box">
               <svg className="manila-vector-map" viewBox="0 0 300 500">
+                {/* Land background (translucent dark purple) */}
+                <rect x="0" y="0" width="300" height="500" fill="rgba(18, 5, 33, 0.2)" />
+
+                {/* Manila Bay coastline (Water to the West/Left) */}
+                <path
+                  d="M -50,100 L 115,130 C 120,160 128,180 128,195 C 128,205 132,210 135,215 C 138,220 142,235 140,250 C 137,265 125,268 120,270 C 105,275 95,260 85,255 C 75,250 82,268 102,272 C 112,274 92,285 82,290 C 72,295 68,300 62,310 C 48,330 32,335 22,340 C 12,345 2,355 -10,360 L -50,550 Z"
+                  fill="rgba(10, 4, 18, 0.75)"
+                  stroke="rgba(201, 169, 110, 0.22)"
+                  strokeWidth="1"
+                />
+
+                {/* Laguna de Bay coastline (Water to the East/Right) */}
+                <path
+                  d="M 350,220 L 225,235 C 205,245 195,250 188,260 C 180,270 178,280 180,295 C 182,310 183,315 185,320 C 190,330 195,332 200,335 C 210,345 212,350 215,355 C 220,365 225,368 230,370 C 240,380 242,390 245,395 C 248,400 252,408 255,420 C 258,435 255,450 260,465 L 350,490 Z"
+                  fill="rgba(10, 4, 18, 0.75)"
+                  stroke="rgba(201, 169, 110, 0.22)"
+                  strokeWidth="1"
+                />
+
                 {/* Grid guidelines for high-tech clinical look */}
-                <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(201, 169, 110, 0.08)" />
-                <line x1="0" y1="200" x2="300" y2="200" stroke="rgba(201, 169, 110, 0.08)" />
-                <line x1="0" y1="300" x2="300" y2="300" stroke="rgba(201, 169, 110, 0.08)" />
-                <line x1="0" y1="400" x2="300" y2="400" stroke="rgba(201, 169, 110, 0.08)" />
-                <line x1="100" y1="0" x2="100" y2="500" stroke="rgba(201, 169, 110, 0.08)" />
-                <line x1="200" y1="0" x2="200" y2="500" stroke="rgba(201, 169, 110, 0.08)" />
+                <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(201, 169, 110, 0.06)" />
+                <line x1="0" y1="200" x2="300" y2="200" stroke="rgba(201, 169, 110, 0.06)" />
+                <line x1="0" y1="300" x2="300" y2="300" stroke="rgba(201, 169, 110, 0.06)" />
+                <line x1="0" y1="400" x2="300" y2="400" stroke="rgba(201, 169, 110, 0.06)" />
+                <line x1="100" y1="0" x2="100" y2="500" stroke="rgba(201, 169, 110, 0.06)" />
+                <line x1="200" y1="0" x2="200" y2="500" stroke="rgba(201, 169, 110, 0.06)" />
+
+                {/* Coordinate Labels */}
+                <text x="5" y="95" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">14.65° N</text>
+                <text x="5" y="195" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">14.55° N</text>
+                <text x="5" y="295" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">14.45° N</text>
+                <text x="5" y="395" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">14.35° N</text>
+                
+                <text x="95" y="493" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">120.95° E</text>
+                <text x="195" y="493" fill="rgba(201, 169, 110, 0.35)" fontSize="6" fontFamily="var(--font-sans)">121.05° E</text>
 
                 {/* Draw connecting network links */}
                 {branchesData.map((branch) => {
                   const { x, y } = projectCoords(branch.lat, branch.lng);
                   const selCoords = projectCoords(selectedBranch.lat, selectedBranch.lng);
+                  const isSelected = selectedBranch.id === branch.id;
                   return (
                     <line
                       key={`link-${branch.id}`}
@@ -77,10 +106,10 @@ export default function BranchMap() {
                       y1={y}
                       x2={selCoords.x}
                       y2={selCoords.y}
-                      stroke="var(--clr-accent)"
-                      strokeWidth="0.5"
-                      strokeOpacity="0.15"
-                      strokeDasharray="4 4"
+                      stroke={isSelected ? "var(--clr-accent)" : "rgba(201, 169, 110, 0.5)"}
+                      strokeWidth={isSelected ? "0.8" : "0.4"}
+                      strokeOpacity={isSelected ? "0.4" : "0.12"}
+                      strokeDasharray={isSelected ? "2 2" : "4 4"}
                     />
                   );
                 })}
@@ -92,12 +121,22 @@ export default function BranchMap() {
                   return (
                     <g key={branch.id} onClick={() => setSelectedBranch(branch)} style={{ cursor: "pointer" }}>
                       {isSelected && (
-                        <circle cx={x} cy={y} r="14" fill="var(--clr-accent)" fillOpacity="0.18" className="pulse-circle">
-                          <animate attributeName="r" values="6;18;6" dur="3s" repeatCount="indefinite" />
-                          <animate attributeName="fill-opacity" values="0.3;0.05;0.3" dur="3s" repeatCount="indefinite" />
-                        </circle>
+                        <>
+                          <circle cx={x} cy={y} r="20" fill="var(--clr-accent)" fillOpacity="0.12" className="pulse-circle">
+                            <animate attributeName="r" values="6;22;6" dur="2.5s" repeatCount="indefinite" />
+                            <animate attributeName="fill-opacity" values="0.22;0.02;0.22" dur="2.5s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx={x} cy={y} r="10" fill="var(--clr-accent)" fillOpacity="0.08" />
+                        </>
                       )}
-                      <circle cx={x} cy={y} r={isSelected ? 6 : 4} fill={isSelected ? "var(--clr-accent)" : "rgba(254, 252, 249, 0.45)"} stroke="var(--clr-accent)" strokeWidth="1" />
+                      <circle 
+                        cx={x} 
+                        cy={y} 
+                        r={isSelected ? 6 : 4} 
+                        fill={isSelected ? "var(--clr-accent)" : "rgba(254, 252, 249, 0.5)"} 
+                        stroke="var(--clr-accent)" 
+                        strokeWidth={isSelected ? "2" : "1"} 
+                      />
                     </g>
                   );
                 })}

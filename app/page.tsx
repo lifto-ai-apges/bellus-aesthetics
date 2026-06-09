@@ -6,6 +6,7 @@ import HeroVideo from "../components/home/HeroVideo";
 import TrustBar from "../components/home/TrustBar";
 import ServicesPreview from "../components/home/ServicesPreview";
 import BranchMap from "../components/home/BranchMap";
+import TransformationsMarquee from "../components/home/TransformationsMarquee";
 
 export default function Home() {
   // Before/After slider state
@@ -83,33 +84,16 @@ export default function Home() {
             onTouchMove={handleTouchMove}
             style={{ "--clip-pos": `${sliderPos}%` } as React.CSSProperties}
           >
-            {/* Before Skin Image (Dull / Pigmented vector representation) */}
+            {/* Before Skin Image */}
             <div className="ba-image ba-before">
-              <svg viewBox="0 0 800 450" className="slider-svg-content">
-                <rect width="100%" height="100%" fill="#E3DCD5" />
-                <circle cx="200" cy="150" r="10" fill="#BAA699" opacity="0.3" filter="blur(8px)" />
-                <circle cx="600" cy="300" r="25" fill="#B29C8B" opacity="0.4" filter="blur(12px)" />
-                <circle cx="450" cy="180" r="15" fill="#A89281" opacity="0.35" filter="blur(10px)" />
-                <circle cx="300" cy="320" r="8" fill="#BAA699" opacity="0.3" filter="blur(6px)" />
-                <text x="30" y="420" fill="#4A1A6B" fontFamily="var(--font-serif)" fontSize="1.8rem" letterSpacing="0.1em" opacity="0.7">BEFORE TREATMENT</text>
-              </svg>
+              <img src="/images/slider-before.jpg" alt="Clinical Face Lift Before Treatment" className="slider-img-content" />
+              <div className="ba-label ba-label-before">Before Facelift</div>
             </div>
 
-            {/* After Skin Image (Radiant / Golden Glow representation) */}
+            {/* After Skin Image */}
             <div className="ba-image ba-after">
-              <svg viewBox="0 0 800 450" className="slider-svg-content">
-                <rect width="100%" height="100%" fill="#FEFCF9" />
-                {/* Radiant Golden Glow gradients */}
-                <circle cx="400" cy="225" r="150" fill="url(#goldGlow)" opacity="0.25" filter="blur(30px)" />
-                <circle cx="200" cy="150" r="90" fill="url(#goldGlow)" opacity="0.15" filter="blur(20px)" />
-                <text x="770" y="420" fill="#4A1A6B" textAnchor="end" fontFamily="var(--font-serif)" fontSize="1.8rem" letterSpacing="0.1em" opacity="0.8">AFTER BELLUS GLOW</text>
-                <defs>
-                  <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#C9A96E" />
-                    <stop offset="100%" stopColor="#FEFCF9" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
-              </svg>
+              <img src="/images/slider-after.jpg" alt="Clinical Face Lift After Treatment" className="slider-img-content" />
+              <div className="ba-label ba-label-after">After (Facelift)</div>
             </div>
 
             {/* Drag Handle */}
@@ -122,6 +106,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 4.5. Double-Track Infinite Marquee Gallery */}
+      <TransformationsMarquee />
 
       {/* 5. Why Choose Bellus USPs */}
       <section className="section usp-section section-dark">
@@ -200,10 +187,35 @@ export default function Home() {
           background-color: var(--clr-bg-alt);
         }
 
-        .slider-svg-content {
+        .slider-img-content {
           width: 100%;
           height: 100%;
+          object-fit: cover;
           display: block;
+        }
+
+        .ba-label {
+          position: absolute;
+          bottom: 20px;
+          background: rgba(26, 10, 46, 0.8);
+          color: var(--clr-white);
+          padding: 8px 16px;
+          font-family: var(--font-sans);
+          font-size: 0.75rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          border-radius: var(--radius-sm);
+          border: 1px solid rgba(201, 169, 110, 0.3);
+          z-index: 10;
+        }
+
+        .ba-label-before {
+          left: 20px;
+        }
+
+        .ba-label-after {
+          right: 20px;
         }
 
         /* USP Grid */
