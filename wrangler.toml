@@ -1,0 +1,11 @@
+# wrangler.toml — Cloudflare Pages configuration
+name = "bellus-aesthetics"
+compatibility_date = "2026-06-09"
+compatibility_flags = ["nodejs_compat"]
+
+[site]
+bucket = ".next"
+
+[build]
+command = "npm run build"
+path = ".next"
