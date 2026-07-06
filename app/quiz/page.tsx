@@ -5,6 +5,9 @@ import Link from "next/link";
 import { quizQuestions, getQuizResults, QuizResults } from "../../data/quiz-logic";
 import ServiceCard from "../../components/ui/ServiceCard";
 import ProductCard from "../../components/ui/ProductCard";
+import BuyModal from "../../components/ui/BuyModal";
+import { ProductItem } from "../../data/products";
+import { submitEvent } from "../../lib/leads";
 
 export default function TreatmentQuiz() {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -12,6 +15,7 @@ export default function TreatmentQuiz() {
   const [leadFormOpen, setLeadFormOpen] = useState<boolean>(false);
   const [leadData, setLeadData] = useState({ name: "", email: "", phone: "" });
   const [results, setResults] = useState<QuizResults | null>(null);
+  const [buyProduct, setBuyProduct] = useState<ProductItem | null>(null);
 
   const handleSelectOption = (questionId: string, optionValue: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: optionValue }));
@@ -32,6 +36,16 @@ export default function TreatmentQuiz() {
 
   const handleLeadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (leadData.name || leadData.phone || leadData.email) {
+      // Fire-and-forget: quiz leads land in the group CRM spine with their answers
+      submitEvent({
+        site: "aesthetics",
+        type: "lead",
+        name: "quiz_lead",
+        contact: leadData,
+        payload: { answers },
+      });
+    }
     calculateAndShowResults();
   };
 
@@ -189,11 +203,13 @@ export default function TreatmentQuiz() {
               <div className="results-grid">
                 {results.recommendedProducts.map((product) => (
                   <div key={product.id} className="grid-item">
-                    <ProductCard product={product} onOpenDetails={() => {}} />
+                    <ProductCard product={product} onOpenDetails={() => {}} onBuy={setBuyProduct} />
                   </div>
                 ))}
               </div>
             </div>
+
+            {buyProduct && <BuyModal product={buyProduct} onClose={() => setBuyProduct(null)} />}
 
             <div className="quiz-restart-wrapper">
               <button onClick={handleReset} className="btn btn-outline restart-btn">

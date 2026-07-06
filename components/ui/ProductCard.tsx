@@ -1,20 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { ProductItem } from "../../data/products";
 
 interface ProductCardProps {
   product: ProductItem;
   onOpenDetails: (product: ProductItem) => void;
+  onBuy: (product: ProductItem) => void;
 }
 
-export default function ProductCard({ product, onOpenDetails }: ProductCardProps) {
-  const [added, setAdded] = useState(false);
-
-  const handleAddToCart = (e: React.MouseEvent) => {
+export default function ProductCard({ product, onOpenDetails, onBuy }: ProductCardProps) {
+  const handleBuy = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    onBuy(product);
   };
 
   // Luxury SVG illustration placeholder based on category
@@ -69,11 +66,8 @@ export default function ProductCard({ product, onOpenDetails }: ProductCardProps
 
       <div className="product-footer">
         <span className="product-price">{product.price}</span>
-        <button
-          onClick={handleAddToCart}
-          className={`btn btn-primary btn-add-cart ${added ? "added" : ""}`}
-        >
-          {added ? "Added!" : "Add to Cart"}
+        <button onClick={handleBuy} className="btn btn-primary btn-add-cart">
+          Buy Now
         </button>
       </div>
 

@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { productsData, ProductItem } from "../../data/products";
 import ProductCard from "../../components/ui/ProductCard";
+import BuyModal from "../../components/ui/BuyModal";
 import { getProductSchema } from "../../lib/schema";
 
 export default function ProductsCatalog() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activeDetailsProduct, setActiveDetailsProduct] = useState<ProductItem | null>(null);
+  const [buyProduct, setBuyProduct] = useState<ProductItem | null>(null);
 
   const categories = [
     { value: "all", label: "All Products" },
@@ -66,12 +68,15 @@ export default function ProductsCatalog() {
           <div className="products-grid">
             {filteredProducts.map((product) => (
               <div key={product.id} className="grid-item">
-                <ProductCard product={product} onOpenDetails={setActiveDetailsProduct} />
+                <ProductCard product={product} onOpenDetails={setActiveDetailsProduct} onBuy={setBuyProduct} />
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Quick-order modal */}
+      {buyProduct && <BuyModal product={buyProduct} onClose={() => setBuyProduct(null)} />}
 
       {/* Product Details Drawer/Modal */}
       {activeDetailsProduct && (
