@@ -22,7 +22,7 @@ export interface BellusEvent {
 }
 
 const LEAD_API =
-  process.env.NEXT_PUBLIC_LEAD_API || "https://bellus-leads.liftoai.workers.dev";
+  process.env.NEXT_PUBLIC_LEAD_API || "https://bellus-leads.tony-hilden.workers.dev";
 
 const QUEUE_KEY = "bellus_lead_queue";
 const SID_KEY = "bellus_sid";
