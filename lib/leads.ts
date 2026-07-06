@@ -105,7 +105,8 @@ export async function submitEvent(
 export function track(name: string, site: BellusSite, payload?: Record<string, unknown>) {
   const record = envelope({ site, type: "event", name, payload });
   try {
-    const blob = new Blob([JSON.stringify(record)], { type: "application/json" });
+    // text/plain is CORS-safelisted -> sendBeacon needs no preflight; the worker parses the body regardless of content-type
+    const blob = new Blob([JSON.stringify(record)], { type: "text/plain;charset=UTF-8" });
     if (!navigator.sendBeacon(`${LEAD_API}/api/event`, blob)) queueLocally(record);
   } catch {
     queueLocally(record);

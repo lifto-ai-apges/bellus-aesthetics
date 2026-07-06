@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ChatWidget from "../components/chatbot/ChatWidget";
+import AutoTrack from "../components/AutoTrack";
 import { branchesData } from "../data/branches";
 import "./globals.css";
 
@@ -110,6 +111,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <ChatWidget />
+        <AutoTrack site="aesthetics" />
       </body>
     </html>
   );
