@@ -128,9 +128,15 @@ export default function ProductsCatalog() {
                 )}
 
                 <div className="modal-actions" style={{ marginTop: "24px" }}>
-                  <Link href={`/book?inquire_product=${activeDetailsProduct.id}`} className="btn btn-primary modal-buy-btn">
-                    Inquire / Order via Branch
-                  </Link>
+                  <button
+                    className="btn btn-primary modal-buy-btn"
+                    onClick={() => {
+                      setBuyProduct(activeDetailsProduct);
+                      setActiveDetailsProduct(null);
+                    }}
+                  >
+                    Buy Now — {activeDetailsProduct.price}
+                  </button>
                 </div>
               </div>
             </div>
