@@ -37,10 +37,10 @@ export const metadata: Metadata = {
     siteName: "Bellus Aesthetics",
     images: [
       {
-        url: "/logo.png",
-        width: 800,
-        height: 800,
-        alt: "Bellus Aesthetics"
+        url: "/og-card.png",
+        width: 1200,
+        height: 630,
+        alt: "Bellus Aesthetics — book yourself, 24/7"
       }
     ],
     locale: "en_PH",
