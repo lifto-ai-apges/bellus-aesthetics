@@ -7,6 +7,8 @@ import TrustBar from "../components/home/TrustBar";
 import ServicesPreview from "../components/home/ServicesPreview";
 import BranchMap from "../components/home/BranchMap";
 import TransformationsMarquee from "../components/home/TransformationsMarquee";
+import Reveal from "../components/Reveal";
+import StickyBookBar from "../components/ui/StickyBookBar";
 
 export default function Home() {
   // Before/After slider state
@@ -68,16 +70,19 @@ export default function Home() {
       {/* 4. Before/After Interactive Comparison Slider */}
       <section className="section comparison-section">
         <div className="container">
-          <div className="section-header">
-            <span className="section-eyebrow">Transformation</span>
-            <h2 className="section-title">Visible Transformations</h2>
-            <div className="gold-divider"></div>
-            <p className="section-desc">
-              Slide to see the clinical results of our treatments. Our non-surgical procedures deliver safe, progressive skin clearing and body slimming.
-            </p>
-          </div>
+          <Reveal>
+            <div className="section-header">
+              <span className="section-eyebrow">Transformation</span>
+              <h2 className="section-title">Visible Transformations</h2>
+              <div className="gold-divider"></div>
+              <p className="section-desc">
+                Slide to see the clinical results of our treatments. Our non-surgical procedures deliver safe, progressive skin clearing and body slimming.
+              </p>
+            </div>
+          </Reveal>
 
-          <div 
+          <Reveal delay={120}>
+          <div
             ref={sliderRef}
             className="ba-slider"
             onMouseMove={handleMouseMove}
@@ -104,31 +109,38 @@ export default function Home() {
               </svg>
             </div>
           </div>
+          </Reveal>
         </div>
       </section>
 
       {/* 4.5. Double-Track Infinite Marquee Gallery */}
-      <TransformationsMarquee />
+      <Reveal>
+        <TransformationsMarquee />
+      </Reveal>
 
       {/* 5. Why Choose Bellus USPs */}
       <section className="section usp-section section-dark">
         <div className="container">
-          <div className="section-header">
-            <span className="section-eyebrow">Excellence</span>
-            <h2 className="section-title">The Bellus Standard</h2>
-            <div className="gold-divider"></div>
-            <p className="section-desc">
-              We combine scientific beauty treatments with board-certified medical supervision to provide an unmatched standard of clinic care.
-            </p>
-          </div>
+          <Reveal>
+            <div className="section-header">
+              <span className="section-eyebrow">Excellence</span>
+              <h2 className="section-title">The Bellus Standard</h2>
+              <div className="gold-divider"></div>
+              <p className="section-desc">
+                We combine scientific beauty treatments with board-certified medical supervision to provide an unmatched standard of clinic care.
+              </p>
+            </div>
+          </Reveal>
 
           <div className="usp-grid">
             {usps.map((usp, idx) => (
-              <div key={idx} className="glass-card-dark usp-card">
-                <span className="usp-icon">{usp.icon}</span>
-                <h3 className="usp-title">{usp.title}</h3>
-                <p className="usp-desc">{usp.desc}</p>
-              </div>
+              <Reveal key={idx} className="reveal-fill" delay={idx * 100}>
+                <div className="glass-card-dark usp-card">
+                  <span className="usp-icon">{usp.icon}</span>
+                  <h3 className="usp-title">{usp.title}</h3>
+                  <p className="usp-desc">{usp.desc}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -137,23 +149,30 @@ export default function Home() {
       {/* 6. Interactive Skincare Quiz Call-To-Action Banner */}
       <section className="section quiz-cta-section">
         <div className="container">
-          <div className="quiz-cta-box glass-card">
-            <div className="quiz-cta-content">
-              <span className="quiz-eyebrow">Smart Skincare</span>
-              <h2 className="quiz-title">Find Your Perfect Treatment Map</h2>
-              <p className="quiz-desc">
-                Take our 6-step diagnostic quiz. Receive a customized combination of services and products tailored specifically to your concerns and budget.
-              </p>
-              <Link href="/quiz" className="btn btn-primary quiz-btn">
-                Start Skin Quiz
-              </Link>
+          <Reveal>
+            <div className="quiz-cta-box glass-card">
+              <div className="quiz-cta-content">
+                <span className="quiz-eyebrow">Smart Skincare</span>
+                <h2 className="quiz-title">Find Your Perfect Treatment Map</h2>
+                <p className="quiz-desc">
+                  Take our 6-step diagnostic quiz. Receive a customized combination of services and products tailored specifically to your concerns and budget.
+                </p>
+                <Link href="/quiz" className="btn btn-primary quiz-btn">
+                  Start Skin Quiz
+                </Link>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* 7. Interactive Branches Map Section */}
-      <BranchMap />
+      <Reveal>
+        <BranchMap />
+      </Reveal>
+
+      {/* Mobile sticky booking bar (appears after the hero) */}
+      <StickyBookBar />
 
       <style jsx>{`
         .section-header {

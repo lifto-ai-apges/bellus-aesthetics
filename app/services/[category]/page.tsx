@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { servicesData } from "../../../data/services";
 import ServiceCard from "../../../components/ui/ServiceCard";
+import StickyBookBar from "../../../components/ui/StickyBookBar";
 import { getFAQSchema, getServiceSchema } from "../../../lib/schema";
 
 interface CategoryPageProps {
@@ -99,6 +100,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="category-detail-page">
+      <StickyBookBar />
       {/* Dynamic Schema Injection */}
       <script
         type="application/ld+json"

@@ -181,6 +181,17 @@ p {
   transform: translateY(-2px);
 }
 
+/* Micro-interactions: consistent press-down + focus states for all buttons */
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 3px;
+}
+
 /* Layout Utilities */
 .container {
   width: 100%;
@@ -275,6 +286,38 @@ p {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Scroll-reveal motion system (components/Reveal.tsx) */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-up.revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Let reveal wrappers behave like their content inside grids/flex rows */
+.reveal-up.reveal-fill {
+  height: 100%;
+}
+
+.reveal-up.reveal-fill > :first-child {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Custom animations helper classes */
@@ -445,6 +488,15 @@ p {
   .chatbot-bubble {
     bottom: 20px;
     right: 20px;
+  }
+
+  /* Lift the chat bubble above the sticky booking bar when it is visible */
+  body.bookbar-visible .chatbot-bubble {
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  }
+  body.bookbar-visible .chatbot-panel {
+    bottom: calc(154px + env(safe-area-inset-bottom, 0px));
+    height: 68vh;
   }
 }
 

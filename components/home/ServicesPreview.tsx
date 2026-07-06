@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import ServiceCard from "../ui/ServiceCard";
+import Reveal from "../Reveal";
 import { servicesData } from "../../data/services";
 
 export default function ServicesPreview() {
@@ -21,28 +22,34 @@ export default function ServicesPreview() {
   return (
     <section className="section services-preview-section">
       <div className="container">
-        <div className="section-header">
-          <span className="section-eyebrow">Signature Offerings</span>
-          <h2 className="section-title">Clinically Proven Results</h2>
-          <div className="gold-divider"></div>
-          <p className="section-desc">
-            Explore our state-of-the-art procedures designed to rejuvenate your skin, restore facial volume, and sculpt your ideal body contour.
-          </p>
-        </div>
+        <Reveal>
+          <div className="section-header">
+            <span className="section-eyebrow">Signature Offerings</span>
+            <h2 className="section-title">Clinically Proven Results</h2>
+            <div className="gold-divider"></div>
+            <p className="section-desc">
+              Explore our state-of-the-art procedures designed to rejuvenate your skin, restore facial volume, and sculpt your ideal body contour.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="services-grid">
           {featuredServices.map((item, idx) => (
             <div key={idx} className="grid-item">
-              <ServiceCard service={item.service!} categorySlug={item.categorySlug} />
+              <Reveal className="reveal-fill" delay={idx * 120}>
+                <ServiceCard service={item.service!} categorySlug={item.categorySlug} />
+              </Reveal>
             </div>
           ))}
         </div>
 
-        <div className="view-all-wrapper">
-          <Link href="/services" className="btn btn-primary view-all-btn">
-            View All Treatments
-          </Link>
-        </div>
+        <Reveal delay={150}>
+          <div className="view-all-wrapper">
+            <Link href="/services" className="btn btn-primary view-all-btn">
+              View All Treatments
+            </Link>
+          </div>
+        </Reveal>
       </div>
 
       <style jsx>{`

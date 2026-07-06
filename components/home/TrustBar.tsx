@@ -1,6 +1,7 @@
 "use client";
 
 import AnimatedCounter from "../ui/AnimatedCounter";
+import Reveal from "../Reveal";
 
 export default function TrustBar() {
   const stats = [
@@ -15,12 +16,14 @@ export default function TrustBar() {
       <div className="container">
         <div className="trust-grid">
           {stats.map((stat, idx) => (
-            <div key={idx} className="stat-card">
-              <div className="stat-number-wrapper">
-                <AnimatedCounter target={stat.target} suffix={stat.suffix} />
+            <Reveal key={idx} delay={idx * 90}>
+              <div className="stat-card">
+                <div className="stat-number-wrapper">
+                  <AnimatedCounter target={stat.target} suffix={stat.suffix} />
+                </div>
+                <span className="stat-label">{stat.label}</span>
               </div>
-              <span className="stat-label">{stat.label}</span>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

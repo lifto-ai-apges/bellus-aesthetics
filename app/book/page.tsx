@@ -5,6 +5,7 @@ import Link from "next/link";
 import { branchesData } from "../../data/branches";
 import { servicesData, ServiceItem } from "../../data/services";
 import { submitEvent } from "../../lib/leads";
+import TimeGreeting from "../../components/ui/TimeGreeting";
 
 const peso = (n: number) => `₱${n.toLocaleString("en-PH")}`;
 const BNPL_MIN = 9000;
@@ -91,6 +92,7 @@ export default function BookingPage() {
         <div className="glass-card booking-card">
           <span className="booking-eyebrow">Book Yourself — No Calls Needed</span>
           <h1 className="booking-title">Schedule Your Treatment</h1>
+          <TimeGreeting />
           <div className="gold-divider" style={{ margin: "12px 0 var(--space-md)" }}></div>
 
           {bookingRef ? (

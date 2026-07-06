@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { servicesData } from "../../data/services";
+import StickyBookBar from "../../components/ui/StickyBookBar";
 
 export default function ServicesHub() {
   return (
     <div className="services-hub-page">
+      <StickyBookBar />
       {/* Page Header */}
       <section className="section hub-header section-dark">
         <div className="container">

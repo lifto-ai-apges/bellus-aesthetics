@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { generateBotResponse } from "./chatbot-data";
+import { generateBotResponse, formatBotHtml } from "./chatbot-data";
 
 interface Message {
   sender: "user" | "bot";
@@ -22,7 +22,7 @@ export default function ChatWidget() {
     setMessages([
       {
         sender: "bot",
-        text: "Hello! Welcome to Bellus Aesthetics. 🌸 I am your personal beauty assistant. Ask me anything about our services, pricing, skincare products, or branch locations!",
+        text: generateBotResponse("hello"),
         time
       }
     ]);
@@ -110,7 +110,7 @@ export default function ChatWidget() {
           {messages.map((msg, idx) => (
             <div key={idx} className={`message-wrapper ${msg.sender}`}>
               <div className="message-bubble">
-                <p className="message-text" dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }} />
+                <p className="message-text" dangerouslySetInnerHTML={{ __html: formatBotHtml(msg.text) }} />
                 <span className="message-time">{msg.time}</span>
               </div>
             </div>
@@ -265,6 +265,18 @@ export default function ChatWidget() {
           line-height: 1.5;
           margin: 0;
           word-break: break-word;
+        }
+
+        .message-text :global(a) {
+          color: var(--clr-primary);
+          font-weight: 700;
+          text-decoration: underline;
+          text-decoration-color: var(--clr-accent);
+          text-underline-offset: 2px;
+        }
+
+        .user .message-text :global(a) {
+          color: var(--clr-accent-light);
         }
 
         .message-time {

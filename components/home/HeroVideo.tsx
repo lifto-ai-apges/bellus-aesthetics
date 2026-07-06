@@ -27,6 +27,10 @@ export default function HeroVideo() {
       {/* Purple Gradient Overlay */}
       <div className="hero-overlay"></div>
 
+      {/* Bottom fade — grounds the CTAs on clean dark plum (hides baked-in
+          video typography behind the buttons on small screens) */}
+      <div className="hero-bottom-fade"></div>
+
       {/* Hero Content */}
       <div className="container hero-content-container">
         <div className={`hero-content ${loaded ? "fade-in-up" : ""}`}>
@@ -92,6 +96,22 @@ export default function HeroVideo() {
             rgba(26, 10, 46, 0.92) 100%
           );
           z-index: 2;
+        }
+
+        .hero-bottom-fade {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 42%;
+          background: linear-gradient(
+            180deg,
+            rgba(26, 10, 46, 0) 0%,
+            rgba(26, 10, 46, 0.4) 52%,
+            rgba(26, 10, 46, 0.85) 100%
+          );
+          z-index: 2;
+          pointer-events: none;
         }
 
         .hero-content-container {
@@ -208,6 +228,22 @@ export default function HeroVideo() {
           }
           .hero-btn {
             width: 100%;
+          }
+        }
+
+        @media (max-width: 767px) {
+          /* The source video has typography baked into its lower third —
+             ground the bottom of the hero in deep plum so the CTAs and
+             scroll cue sit on clean dark instead of colliding with it. */
+          .hero-bottom-fade {
+            height: 62%;
+            background: linear-gradient(
+              180deg,
+              rgba(26, 10, 46, 0) 0%,
+              rgba(26, 10, 46, 0.58) 32%,
+              rgba(26, 10, 46, 0.96) 62%,
+              rgba(26, 10, 46, 0.99) 100%
+            );
           }
         }
       `}</style>

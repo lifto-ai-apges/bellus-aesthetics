@@ -42,3 +42,6 @@ next-env.d.ts
 
 # raw clinic photos
 /public/images/before-after/
+
+# local screenshot verification artifacts
+/.shots/
