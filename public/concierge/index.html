@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b0f40">
+<title>Bellus Concierge — ask us anything, privately</title>
+<meta name="description" content="The Bellus Aesthetics concierge answers on your device — treatments, branches, booking and financing. Private by architecture: your questions never leave your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; color:#F4EDF9; line-height:1.6; overflow-x:hidden;
+    background:radial-gradient(120% 90% at 80% -10%, #4A1A6B 0%, #2b0f40 45%, #1c0a2b 100%);
+    font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+  :root{ --purple:#4A1A6B; --gold:#D9B36A; --gold-hi:#EACB8C; --ink:#F4EDF9; --mut:#B9A6CC; --line:rgba(244,237,249,.14);
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace; --serif:"Cormorant Garamond","Hoefler Text",Georgia,serif;
+    --ease:cubic-bezier(.22,1,.36,1); color-scheme:dark; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--gold); color:#2b0f40; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+  .wrap{ width:min(100% - 40px,1080px); margin-inline:auto; }
+
+  .nav{ display:flex; justify-content:space-between; align-items:center; padding:18px 0; }
+  .nav .brand{ font-family:var(--serif); font-size:22px; letter-spacing:.06em; }
+  .nav .brand b{ color:var(--gold); font-weight:500; }
+  .nav .links{ display:flex; gap:18px; font-size:13px; color:var(--mut); }
+  .nav .links a:hover{ color:var(--gold); }
+
+  .hero{ padding:clamp(18px,4vh,44px) 0 clamp(12px,2vh,20px); }
+  .eyebrow{ display:inline-flex; align-items:center; gap:12px; font-size:11.5px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); }
+  .eyebrow::before{ content:""; width:30px; height:1px; background:currentColor; opacity:.8; }
+  .hero h1{ font-family:var(--serif); font-weight:500; font-size:clamp(2.2rem,5.6vw,4rem); line-height:1.02; margin:14px 0 0; text-wrap:balance; }
+  .hero h1 em{ color:var(--gold); font-style:italic; }
+  .hero p{ color:var(--mut); max-width:62ch; margin-top:12px; text-wrap:pretty; }
+
+  .console{ display:grid; grid-template-columns:1.55fr .85fr; gap:18px; margin:18px 0 30px; align-items:start; }
+  @media(max-width:860px){ .console{ grid-template-columns:1fr; } }
+  .chat{ border:1px solid var(--line); border-radius:18px; background:rgba(20,8,32,.55); backdrop-filter:blur(10px); overflow:hidden;
+    box-shadow:0 40px 90px -50px rgba(0,0,0,.8); }
+  .chat-bar{ display:flex; justify-content:space-between; align-items:center; padding:13px 18px; border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); }
+  .chat-bar b{ color:var(--ink); font-weight:400; }
+  .chat-bar button{ background:none; border:1px solid var(--line); border-radius:6px; color:var(--mut); cursor:pointer;
+    font-family:var(--mono); font-size:10px; padding:3px 8px; margin-left:10px; }
+  .msgs{ height:min(46svh,430px); overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
+  .m{ max-width:88%; padding:11px 15px; border-radius:14px; font-size:14.5px; }
+  .m.user{ align-self:flex-end; background:rgba(217,179,106,.16); border:1px solid rgba(217,179,106,.35); border-bottom-right-radius:4px; }
+  .m.bot{ align-self:flex-start; background:rgba(244,237,249,.06); border:1px solid var(--line); border-bottom-left-radius:4px; }
+  .m.bot .src{ display:block; margin-top:9px; font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; color:#8a7799; text-transform:uppercase; }
+  .m.bot.thinking::after{ content:"▋"; animation:blink 1s steps(1) infinite; color:var(--gold); }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; padding:0 18px 12px; }
+  .chip{ font-size:12.5px; color:var(--mut); border:1px solid var(--line); border-radius:999px; padding:7px 13px; cursor:pointer;
+    background:transparent; font-family:inherit; transition:color .25s,border-color .25s; }
+  .chip:hover{ color:var(--gold); border-color:rgba(217,179,106,.5); }
+  .bookrow{ padding:0 18px 12px; font-size:12.5px; color:var(--mut); }
+  .bookrow a{ color:var(--gold); font-weight:600; }
+  .in{ display:flex; gap:10px; padding:14px 16px; border-top:1px solid var(--line); }
+  .in input{ flex:1; background:rgba(244,237,249,.07); border:1px solid var(--line); border-radius:10px; color:var(--ink);
+    padding:12px 15px; font-size:14.5px; font-family:inherit; outline:none; min-width:0; }
+  .in input:focus{ border-color:rgba(217,179,106,.6); }
+  .in button{ background:var(--gold); color:#2b0f40; border:0; border-radius:10px; padding:12px 20px; font-weight:700;
+    font-size:14px; cursor:pointer; font-family:inherit; transition:transform .3s var(--ease),background .3s; }
+  .in button:hover{ background:var(--gold-hi); transform:translateY(-1px); }
+  .in button:disabled{ opacity:.45; transform:none; }
+
+  .panel{ border:1px solid var(--line); border-radius:18px; background:rgba(20,8,32,.55); backdrop-filter:blur(10px); padding:18px; position:sticky; top:16px; }
+  .panel h3{ margin:0 0 12px; font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--mut); font-weight:400; }
+  .badge{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    border:1px solid var(--line); border-radius:999px; padding:7px 13px; margin-bottom:12px; color:var(--mut); }
+  .badge .dot{ width:8px; height:8px; border-radius:50%; background:var(--mut); }
+  .badge.t1{ color:#BFE8A8; border-color:rgba(191,232,168,.4); } .badge.t1 .dot{ background:#BFE8A8; box-shadow:0 0 10px #BFE8A8; }
+  .badge.t2{ color:var(--gold); border-color:rgba(217,179,106,.4); } .badge.t2 .dot{ background:var(--gold); box-shadow:0 0 10px var(--gold); }
+  .stat{ display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid rgba(244,237,249,.07); font-size:13px; }
+  .stat:last-of-type{ border:0; }
+  .stat .k{ color:var(--mut); font-size:12px; } .stat .v{ font-family:var(--mono); font-size:12px; text-align:right; }
+  .privacy{ margin-top:14px; padding:12px 14px; border:1px dashed rgba(217,179,106,.4); border-radius:10px; font-size:12px; color:var(--mut); }
+  .privacy b{ color:var(--gold); }
+  .prog{ height:4px; border-radius:2px; background:rgba(244,237,249,.1); overflow:hidden; margin-top:10px; display:none; }
+  .prog i{ display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#a86fd8); transition:width .3s; }
+
+  footer{ border-top:1px solid var(--line); padding:22px 0; margin-top:8px; }
+  .fi{ display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; color:#8a7799; font-size:12px; font-family:var(--mono); }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/">Bellus <b>Aesthetics</b></a>
+    <span class="links"><a href="/services">Treatments</a><a href="/quiz">Quiz</a><a href="/book">Book</a></span>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Concierge · Private by design</span>
+    <h1>Ask us anything.<br>It stays on <em>your</em> device.</h1>
+    <p>Treatments, branches, financing, booking — the Bellus concierge answers instantly, right in your browser. Your questions are never sent to a server. When you're ready, booking takes about a minute.</p>
+  </header>
+
+  <div class="console">
+    <section class="chat" aria-label="Bellus concierge chat">
+      <div class="chat-bar"><span>BELLUS // CONCIERGE</span><span><b id="latency">— ms</b><button id="reset" title="New chat">↺ NEW</button></span></div>
+      <div class="msgs" id="msgs">
+        <div class="m bot">Welcome to Bellus ✨ I'm the clinic concierge, running privately on your device. Ask me about treatments, our 7 branches, financing — or where to start.</div>
+      </div>
+      <div class="chips" id="chips">
+        <button class="chip">What treatments do you offer?</button>
+        <button class="chip">Where are your branches?</button>
+        <button class="chip">Do you offer installments?</button>
+        <button class="chip">I'm not sure where to start</button>
+      </div>
+      <div class="bookrow">Ready now? <a href="/book">Book in about a minute →</a> · or take the <a href="/quiz">1-minute quiz</a></div>
+      <form class="in" id="form">
+        <input id="q" type="text" placeholder="Ask the concierge…" autocomplete="off" aria-label="Your question">
+        <button id="send" type="submit">Ask</button>
+      </form>
+    </section>
+
+    <aside class="panel" aria-label="Engine status">
+      <h3>How this works</h3>
+      <span class="badge" id="badge"><span class="dot"></span><span id="badge-t">DETECTING…</span></span>
+      <div class="prog" id="prog"><i id="prog-i"></i></div>
+      <div class="stat"><span class="k">Runs on</span><span class="v">your device</span></div>
+      <div class="stat"><span class="k">Knowledge</span><span class="v">20 clinic topics</span></div>
+      <div class="stat"><span class="k">Questions answered</span><span class="v" id="st-count">0</span></div>
+      <div class="stat"><span class="k">Sent to servers</span><span class="v" style="color:#BFE8A8">0 questions</span></div>
+      <div class="privacy"><b>Private by architecture.</b> The AI answering you is computed locally in this tab — not a cloud chatbot. Only a booking you choose to submit reaches the clinic.</div>
+    </aside>
+  </div>
+</div>
+
+<footer><div class="wrap fi">
+  <span>BELLUS AESTHETICS · CONCIERGE</span>
+  <span>on-device AI · powered by LocalEnhance Labs</span>
+  <span>2026</span>
+</div></footer>
+
+<script src="kb-data.js"></script>
+<script type="module">
+const KB = window.BELLUS_KB, N = KB.entries.length, D = KB.dims;
+const bin = atob(KB.vecsB64), buf = new ArrayBuffer(bin.length), u8 = new Uint8Array(buf);
+for (let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);
+const VECS = new Float32Array(buf);
+function cosineTop(qv,k=3){ const s=[]; for(let i=0;i<N;i++){ let x=0,o=i*D; for(let d=0;d<D;d++) x+=qv[d]*VECS[o+d]; s.push([x,i]); }
+  s.sort((a,b)=>b[0]-a[0]); return s.slice(0,k).map(([sc,i])=>({score:sc,e:KB.entries[i]})); }
+const STOP=new Set('a,an,the,is,are,do,does,how,what,who,where,when,why,can,i,my,your,you,we,us,it,to,of,on,for,and,or,in,with,me,get,this,that'.split(','));
+function liteTop(q,k=3){ const toks=q.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(t=>t&&!STOP.has(t));
+  const s=KB.entries.map((e,i)=>{ const hay=(e.q+' '+e.a+' '+e.tags.join(' ')).toLowerCase(); let x=0;
+    for(const t of toks) if(hay.includes(t)) x+=t.length>5?2:1; return [x,i]; });
+  s.sort((a,b)=>b[0]-a[0]); return s.slice(0,k).filter(([x])=>x>0).map(([sc,i])=>({score:sc/10,e:KB.entries[i]})); }
+
+const $=id=>document.getElementById(id);
+const badge=$('badge'), badgeT=$('badge-t');
+let tier=3, nanoSession=null, embedFn=null, count=0;
+function setBadge(t,label){ tier=t; badge.className='badge t'+(t===1?'1':'2'); badgeT.textContent=label; }
+setBadge(2,'DETECTING…');
+
+const SYSTEM=`You are the Bellus Aesthetics concierge — warm, refined, concise (2-3 sentences). Bellus: clinical-luxury aesthetics group, 7 branches across Manila and Cavite (Pasig Caniogan flagship), board-certified specialists, US & FDA-cleared technologies, six treatment families (injectables & doctor procedures, facials, laser whitening & anti-aging, slimming face & body, IV drips, makeover packages). Booking is via the site's Book page (about a minute); the 1-minute Quiz builds a personal treatment map. Plans ₱9,000+ can be split 0% over 3 months. RULES: never give medical advice or promise outcomes — a specialist consult decides what's right; never invent prices. FORMAT: plain sentences only, no markdown, no bullet points, no URLs — say "the Book page" or "the quiz" in words.`;
+function cleanMD(s){ return (s||'')
+  .replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/\[([^\]]+)\]\([^)]*\)/g,'$1')
+  .replace(/https?:\/\/[^\s)]+/g,'').replace(/`+/g,'').replace(/\*\*/g,'').replace(/__/g,'').replace(/#{2,}\s*/g,'')
+  .replace(/^#{1,6}\s+/gm,'').replace(/^\s*[-*+]\s+/gm,'').replace(/^\s*\d+\.\s+/gm,'')
+  .replace(/\*/g,'').replace(/\(\s*\)/g,'').replace(/\s+([.,!?;:])/g,'$1').replace(/[ \t]{2,}/g,' ').trim(); }
+
+async function tryNano(){
+  try{
+    const LM=self.LanguageModel||self.ai?.languageModel; if(!LM) return false;
+    let avail='unavailable';
+    if(LM.availability) avail=await LM.availability();
+    else if(LM.capabilities) avail=(await LM.capabilities()).available==='readily'?'available':'unavailable';
+    if(avail!=='available') return false;
+    nanoSession=await (LM.create?LM.create({initialPrompts:[{role:'system',content:SYSTEM}]}):LM.createSession({initialPrompts:[{role:'system',content:SYSTEM}]}));
+    setBadge(1,'PRIVATE AI · ON YOUR DEVICE'); return true;
+  }catch(e){ return false; }
+}
+async function tryEmbed(){
+  try{
+    setBadge(2,'WARMING UP…'); $('prog').style.display='block'; $('prog-i').style.width='30%';
+    const { pipeline } = await import(`https://cdn.jsdelivr.net/npm/@huggingface/transformers@${KB.tfVer}`);
+    $('prog-i').style.width='60%';
+    const p=await pipeline('feature-extraction', KB.model);
+    embedFn=async q=>Array.from((await p(q,{pooling:'mean',normalize:true})).data);
+    await embedFn('warm'); $('prog').style.display='none';
+    setBadge(2,'PRIVATE AI · ON YOUR DEVICE'); return true;
+  }catch(e){ $('prog').style.display='none'; return false; }
+}
+(async()=>{ if(await tryNano()) return; if(await tryEmbed()) return; setBadge(2,'CLINIC GUIDE · ON YOUR DEVICE'); })();
+
+const msgs=$('msgs'), form=$('form'), input=$('q'), send=$('send');
+function add(cls,text){ const d=document.createElement('div'); d.className='m '+cls; d.textContent=text;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight; return d; }
+async function typeOut(el,text,src){ el.classList.add('thinking');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ el.textContent=text; } else { el.textContent='';
+    for(let i=0;i<text.length;i+=3){ el.textContent=text.slice(0,i+3); msgs.scrollTop=msgs.scrollHeight;
+      await new Promise(r=>setTimeout(r,11)); } }
+  el.classList.remove('thinking');
+  if(src){ const s=document.createElement('span'); s.className='src'; s.textContent=src; el.appendChild(s); }
+  msgs.scrollTop=msgs.scrollHeight; }
+async function answer(q){
+  const t0=performance.now(); count++;
+  const bot=add('bot',''); bot.classList.add('thinking');
+  try{
+    if(tier===1&&nanoSession){
+      const hits=embedFn?cosineTop(await embedFn(q)):liteTop(q);
+      const ctx=hits.map(h=>`Q: ${h.e.q}\nA: ${h.e.a}`).join('\n\n');
+      const prompt=`Clinic knowledge:\n${ctx}\n\nVisitor question: ${q}\nAnswer as the Bellus concierge (2-3 plain sentences).`;
+      if(nanoSession.promptStreaming){ bot.classList.remove('thinking'); let raw='';
+        for await (const chunk of nanoSession.promptStreaming(prompt)){
+          raw=(typeof chunk==='string'&&chunk.startsWith(raw))?chunk:raw+chunk;
+          bot.textContent=cleanMD(raw); msgs.scrollTop=msgs.scrollHeight; }
+        bot.textContent=cleanMD(raw);
+      } else { bot.textContent=''; await typeOut(bot, cleanMD(await nanoSession.prompt(prompt))); }
+      const s=document.createElement('span'); s.className='src'; s.textContent='● private ai · on-device'; bot.appendChild(s);
+    } else {
+      let hits=null;
+      if(tier===2&&embedFn) hits=cosineTop(await embedFn(q));
+      if(!hits||!hits.length||hits[0].score<0.25) hits=liteTop(q);
+      if(!hits.length){ await typeOut(bot,"That one's best answered by the team — book a consult through the Book page, or message us via Contact. I can help with treatments, branches, financing and booking.",'● on-device'); }
+      else{ const rel=hits[1]&&hits[1].score>0.35?` You might also ask: “${hits[1].e.q}”`:'';
+        await typeOut(bot,hits[0].e.a+rel,'● private ai · on-device'); }
+    }
+  }catch(e){ await typeOut(bot,'Hit a snag computing that locally — try once more?','● error'); }
+  $('latency').textContent=Math.round(performance.now()-t0)+' ms';
+  $('st-count').textContent=count;
+}
+/* session history */
+const HKEY='bellus-concierge-history';
+try{ (JSON.parse(sessionStorage.getItem(HKEY)||'[]')).forEach(p=>{ add('user',p.q);
+  const b=add('bot',p.a); if(p.src){ const s=document.createElement('span'); s.className='src'; s.textContent=p.src; b.appendChild(s); } }); }catch(e){}
+function remember(q){ try{ const bots=document.querySelectorAll('.m.bot'); const last=bots[bots.length-1];
+  const src=last.querySelector('.src')?.textContent||''; const a=last.textContent.replace(src,'').trim();
+  const h=JSON.parse(sessionStorage.getItem(HKEY)||'[]'); h.push({q,a,src}); sessionStorage.setItem(HKEY,JSON.stringify(h.slice(-12))); }catch(e){} }
+$('reset').addEventListener('click',()=>{ try{sessionStorage.removeItem(HKEY);}catch(e){} location.reload(); });
+form.addEventListener('submit',async e=>{ e.preventDefault();
+  const q=input.value.trim(); if(!q) return;
+  input.value=''; add('user',q); send.disabled=true;
+  await answer(q); remember(q); send.disabled=false; input.focus(); });
+document.getElementById('chips').addEventListener('click',e=>{
+  if(e.target.classList.contains('chip')){ input.value=e.target.textContent; form.requestSubmit(); } });
+</script>
+</body>
+</html>
